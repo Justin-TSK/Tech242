@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { PLATFORMS, CATEGORY_LABELS, CATEGORY_ORDER } from "@/data/platforms";
 import type { PlatformCategory } from "@/data/platforms";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { GraduationCap, Code2, BookOpen } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Plateformes",
+  description: "Les meilleures plateformes d'apprentissage en informatique : cours, exercices et certifications.",
+};
 
 const CATEGORY_ICONS: Record<PlatformCategory, React.ReactNode> = {
   certifiant: <GraduationCap className="h-6 w-6 text-accent-primary" strokeWidth={1.5} />,

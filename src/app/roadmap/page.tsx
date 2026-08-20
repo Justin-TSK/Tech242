@@ -1,8 +1,14 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ROADMAPS } from "@/data/roadmaps";
 import { DOMAINES } from "@/data/domaines";
 import { DOMAIN_ICONS } from "@/lib/icons";
 import { Card } from "@/components/ui/Card";
+
+export const metadata: Metadata = {
+  title: "Roadmaps",
+  description: "Des parcours structurés pour guider votre apprentissage en informatique étape par étape.",
+};
 import { Badge } from "@/components/ui/Badge";
 import { Clock, ArrowRight } from "lucide-react";
 

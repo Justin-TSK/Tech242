@@ -1,32 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { IA_LIST } from "@/data/ia";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 
-const CATEGORIES = [
-  "Toutes",
-  "Général",
-  "dev-web",
-  "dev-mobile",
-  "data-science",
-  "ia-ml",
-  "cybersecurite",
-  "devops",
-  "ui-ux",
-  "erp-systemes",
-  "business-intelligence",
-  "gestion-projet-it",
-  "data-engineering",
-  "securite-gouvernance",
-];
+const CATEGORIES = ["Toutes", ...Array.from(new Set(IA_LIST.flatMap((ia) => ia.category)))] as const;
 
 export default function IAPage() {
   const [selectedCategory, setSelectedCategory] = useState("Toutes");
   const [search, setSearch] = useState("");
 
-  const filtered = IA_LIST.filter((ia) => {
+  const filtered = useMemo(() => IA_LIST.filter((ia) => {
     const matchesCategory =
       selectedCategory === "Toutes" ||
       ia.category.includes(selectedCategory);
@@ -35,7 +20,7 @@ export default function IAPage() {
       ia.name.toLowerCase().includes(search.toLowerCase()) ||
       ia.description.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesSearch;
-  });
+  }), [selectedCategory, search]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -54,6 +39,7 @@ export default function IAPage() {
         <input
           type="text"
           placeholder="Rechercher une IA..."
+          aria-label="Rechercher une IA"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full rounded-xl border border-border-primary bg-bg-card px-4 py-3 text-text-primary placeholder:text-text-tertiary focus:border-accent-primary focus:outline-none focus:ring-1 focus:ring-accent-primary"

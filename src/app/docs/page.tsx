@@ -1,28 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { DOCS } from "@/data/docs";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 
-const TYPES = ["Tous", "official", "tutorial", "course", "tool"];
-const DOMAINES = [
-  "Tous",
-  "dev-web",
-  "dev-mobile",
-  "data-science",
-  "ia-ml",
-  "cybersecurite",
-  "devops",
-  "reseaux",
-  "ui-ux",
-  "erp-systemes",
-  "business-intelligence",
-  "gestion-projet-it",
-  "it-management",
-  "data-engineering",
-  "securite-gouvernance",
-];
+const TYPES = ["Tous", "official", "tutorial", "course", "tool"] as const;
+const DOMAINES = ["Tous", ...Array.from(new Set(DOCS.flatMap((doc) => doc.domain)))] as const;
 
 const TYPE_LABELS: Record<string, string> = {
   official: "Officiel",
@@ -36,7 +20,7 @@ export default function DocsPage() {
   const [selectedDomaine, setSelectedDomaine] = useState("Tous");
   const [search, setSearch] = useState("");
 
-  const filtered = DOCS.filter((doc) => {
+  const filtered = useMemo(() => DOCS.filter((doc) => {
     const matchesType =
       selectedType === "Tous" || doc.type === selectedType;
     const matchesDomaine =
@@ -46,7 +30,7 @@ export default function DocsPage() {
       doc.title.toLowerCase().includes(search.toLowerCase()) ||
       doc.description.toLowerCase().includes(search.toLowerCase());
     return matchesType && matchesDomaine && matchesSearch;
-  });
+  }), [selectedType, selectedDomaine, search]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -65,6 +49,7 @@ export default function DocsPage() {
         <input
           type="text"
           placeholder="Rechercher une doc..."
+          aria-label="Rechercher une documentation"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full rounded-xl border border-border-primary bg-bg-card px-4 py-3 text-text-primary placeholder:text-text-tertiary focus:border-accent-primary focus:outline-none focus:ring-1 focus:ring-accent-primary"

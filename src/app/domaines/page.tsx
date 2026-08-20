@@ -1,8 +1,14 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { DOMAINES } from "@/data/domaines";
 import { DOMAIN_ICONS } from "@/lib/icons";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+
+export const metadata: Metadata = {
+  title: "Domaines",
+  description: "Découvrez les 16 domaines de l'informatique : développement web, data science, IA, cybersécurité et plus encore.",
+};
 import { ArrowRight } from "lucide-react";
 
 export default function DomainesPage() {

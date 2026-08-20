@@ -47,6 +47,7 @@ export default function GlossairePage() {
         <input
           type="text"
           placeholder="Rechercher un terme..."
+          aria-label="Rechercher un terme du glossaire"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full rounded-xl border border-border-primary bg-bg-card py-2.5 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-tertiary focus:border-accent-primary focus:outline-none focus:ring-1 focus:ring-accent-primary/30"

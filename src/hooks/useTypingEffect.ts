@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 interface UseTypingEffectOptions {
-  phrases: string[];
+  phrases: readonly string[];
   typingSpeed?: number;
   deletingSpeed?: number;
   pauseDuration?: number;
@@ -24,6 +24,7 @@ export function useTypingEffect({
 
   useEffect(() => {
     if (phrases.length === 0) return;
+    const p = phrases as string[];
 
     function scheduleNext(delay: number) {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -31,8 +32,8 @@ export function useTypingEffect({
     }
 
     function tick() {
-      if (phrases.length === 0) return;
-      const phrase = phrases[indexRef.current];
+      if (p.length === 0) return;
+      const phrase = p[indexRef.current];
 
       if (pausedRef.current) {
         pausedRef.current = false;
@@ -61,7 +62,7 @@ export function useTypingEffect({
         if (charRef.current <= 0) {
           // Finished deleting — move to next phrase
           deletingRef.current = false;
-          indexRef.current = (indexRef.current + 1) % phrases.length;
+          indexRef.current = (indexRef.current + 1) % p.length;
           scheduleNext(typingSpeed);
         } else {
           scheduleNext(deletingSpeed);

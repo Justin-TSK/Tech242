@@ -9,14 +9,14 @@
 
   --text-primary: #09090b;
   --text-secondary: #52525b;
-  --text-tertiary: #a1a1aa;
+  --text-tertiary: #71717a;
   --text-inverse: #fafafa;
 
   --border-primary: #e4e4e7;
   --border-secondary: #f4f4f5;
 
-  --accent-primary: #7c6dab;
-  --accent-secondary: #8e7fc4;
+  --accent-primary: #6b5b9e;
+  --accent-secondary: #7c6dab;
 
   --success: #059669;
   --warning: #d97706;
@@ -32,7 +32,7 @@
 
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
-  --text-tertiary: #52525b;
+  --text-tertiary: #71717a;
   --text-inverse: #09090b;
 
   --border-primary: #27272a;
@@ -116,4 +116,8 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.hero-gradient {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-primary) / 8%, transparent);
 }

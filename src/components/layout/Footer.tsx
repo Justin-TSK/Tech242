@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SITE_NAME } from "@/lib/constants";
-import { Compass } from "lucide-react";
+import { Logo } from "./Logo";
 
 export function Footer() {
   return (
@@ -9,14 +9,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <Link href="/" className="group flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-primary/10 ring-1 ring-accent-primary/20">
-                <Compass className="h-4 w-4 text-accent-primary" strokeWidth={1.5} />
-              </div>
-              <span className="text-lg font-bold tracking-tight text-text-primary">
-                {SITE_NAME}
-              </span>
-            </Link>
+            <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-text-secondary">
               Votre boussole numérique pour naviguer dans le monde de
               l&apos;informatique. 16 domaines, IA, docs, roadmaps et glossaire.
@@ -55,7 +48,7 @@ export function Footer() {
               À propos
             </h3>
             <p className="mt-4 text-sm leading-relaxed text-text-secondary">
-              TechCompass est une application éducative gratuite destinée aux
+              Tech242 est une application éducative gratuite destinée aux
               étudiants en informatique.
             </p>
           </div>

@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import {
   ComposableMap,
   Geographies,
   Geography,
-  Marker,
 } from "react-simple-maps";
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -32,7 +31,6 @@ const COUNTRIES: CountryData[] = [
   { id: "124", name: "Canada", rank: 9, developers: "400 K", hubs: "Toronto, Vancouver, Montréal", color: "#b4a8e6", coordinates: [-106, 56] },
   { id: "036", name: "Australie", rank: 10, developers: "300 K", hubs: "Sydney, Melbourne, Brisbane", color: "#c4b5f5", coordinates: [134, -25] },
   { id: "410", name: "Corée du Sud", rank: 11, developers: "500 K", hubs: "Séoul, Busan, Daegu", color: "#b4a8e6", coordinates: [128, 36] },
-  { id: "702", name: "Singapour", rank: 12, developers: "200 K", hubs: "Singapore Hub", color: "#c4b5f5", coordinates: [104, 1] },
   { id: "528", name: "Pays-Bas", rank: 13, developers: "350 K", hubs: "Amsterdam, Rotterdam", color: "#c4b5f5", coordinates: [5, 52] },
   { id: "376", name: "Israël", rank: 14, developers: "300 K", hubs: "Tel Aviv, Herzliya", color: "#c4b5f5", coordinates: [35, 31] },
   { id: "752", name: "Suède", rank: 15, developers: "250 K", hubs: "Stockholm, Göteborg", color: "#c4b5f5", coordinates: [15, 62] },
@@ -40,62 +38,63 @@ const COUNTRIES: CountryData[] = [
 
 const RANK_IDS = new Set(COUNTRIES.map((c) => c.id));
 
-function getDotRadius(rank: number): number {
-  if (rank <= 3) return 7;
-  if (rank <= 6) return 5;
-  if (rank <= 10) return 4;
-  return 3;
-}
-
 export function WorldMap() {
-  const [hovered, setHovered] = useState<CountryData | null>(null);
-  const [selected, setSelected] = useState<CountryData | null>(null);
-  const active = selected || hovered;
+  const [active, setActive] = useState<CountryData | null>(null);
 
   const countryMap = useMemo(() => {
     const map = new Map<string, CountryData>();
-    COUNTRIES.forEach((c) => map.set(c.id, c));
+    COUNTRIES.forEach((c) => {
+      map.set(c.id, c);
+      map.set(String(Number(c.id)), c);
+    });
     return map;
+  }, []);
+
+  const showCountry = useCallback((country: CountryData) => {
+    setActive(country);
+  }, []);
+
+  const clearCountry = useCallback(() => {
+    setActive(null);
   }, []);
 
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-      {/* Ranking panel */}
+      {/* Ranking panel — click to show info */}
       <div className="shrink-0 lg:w-64">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-tertiary">
           Top 15 — Développeurs
         </h3>
         <div className="space-y-1">
-          {COUNTRIES.map((country) => {
-            const isActive = active?.id === country.id;
-            return (
-              <div
-                key={country.id}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 cursor-pointer transition-colors ${
-                  isActive
-                    ? "bg-accent-primary/10 text-accent-primary"
-                    : "text-text-secondary hover:bg-bg-tertiary"
-                }`}
-                onMouseEnter={() => setHovered(country)}
-                onMouseLeave={() => setHovered(null)}
-                onClick={() => setSelected(isActive && selected ? null : country)}
-              >
-                <span className="w-5 text-right text-xs font-bold text-text-tertiary">
-                  {country.rank}
-                </span>
-                <span
-                  className="h-2.5 w-2.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: country.color }}
-                />
-                <span className="flex-1 truncate text-sm font-medium">
-                  {country.name}
-                </span>
-                <span className="text-xs text-text-tertiary">
-                  {country.developers}
-                </span>
-              </div>
-            );
-          })}
+          {COUNTRIES.map((country) => (
+            <button
+              key={country.id}
+              onClick={() =>
+                setActive((prev) =>
+                  prev?.id === country.id ? null : country
+                )
+              }
+              className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+                active?.id === country.id
+                  ? "bg-accent-primary/10 text-accent-primary"
+                  : "text-text-secondary hover:bg-bg-tertiary"
+              }`}
+            >
+              <span className="w-5 text-right text-xs font-bold text-text-tertiary">
+                {country.rank}
+              </span>
+              <span
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{ backgroundColor: country.color }}
+              />
+              <span className="flex-1 truncate text-sm font-medium">
+                {country.name}
+              </span>
+              <span className="text-xs text-text-tertiary">
+                {country.developers}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 
@@ -114,69 +113,54 @@ export function WorldMap() {
             <Geographies geography={GEO_URL}>
               {({ geographies }) =>
                 geographies.map((geo) => {
-                  const countryId = geo.id;
+                  const countryId = String(geo.id);
                   const isHighlighted = RANK_IDS.has(countryId);
-                  const isActiveCountry = active?.id === countryId;
+                  const isActive = active?.id === countryId;
 
                   return (
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
-                      fill={isActiveCountry ? "#7c3aed" : isHighlighted ? "#c4b5f5" : "var(--bg-tertiary)"}
-                      stroke={isHighlighted ? "#7c3aed" : "var(--border-primary)"}
-                      strokeWidth={isActiveCountry ? 1.2 : 0.4}
+                      fill={
+                        isActive
+                          ? "#8b5cf6"
+                          : isHighlighted
+                            ? "#c4b5f5"
+                            : "var(--bg-tertiary)"
+                      }
+                      stroke={
+                        isHighlighted ? "#7c3aed" : "var(--border-primary)"
+                      }
+                      strokeWidth={isActive ? 1.2 : 0.4}
                       style={{
-                        default: { outline: "none" },
-                        hover: { outline: "none", fill: isHighlighted ? "#8b5cf6" : "var(--bg-tertiary)" },
+                        default: {
+                          outline: "none",
+                          fill: isActive
+                            ? "#8b5cf6"
+                            : isHighlighted
+                              ? "#c4b5f5"
+                              : "var(--bg-tertiary)",
+                        },
+                        hover: {
+                          outline: "none",
+                          fill: isActive
+                            ? "#8b5cf6"
+                            : isHighlighted
+                              ? "#c4b5f5"
+                              : "var(--bg-tertiary)",
+                        },
                         pressed: { outline: "none" },
                       }}
                       onMouseEnter={() => {
-                        if (isHighlighted) {
-                          const data = countryMap.get(countryId);
-                          if (data) setHovered(data);
-                        }
-                      }}
-                      onMouseLeave={() => setHovered(null)}
-                      onClick={() => {
                         const data = countryMap.get(countryId);
-                        if (data) {
-                          setSelected(selected?.id === countryId ? null : data);
-                        }
+                        if (data) showCountry(data);
                       }}
+                      onMouseLeave={clearCountry}
                     />
                   );
                 })
               }
             </Geographies>
-
-            {/* Markers for ranked countries */}
-            {COUNTRIES.map((country) => {
-              const isActive = active?.id === country.id;
-              const r = getDotRadius(country.rank);
-              return (
-                <Marker
-                  key={country.id}
-                  coordinates={country.coordinates}
-                  onMouseEnter={() => setHovered(country)}
-                  onMouseLeave={() => setHovered(null)}
-                  onClick={() => setSelected(selected?.id === country.id ? null : country)}
-                >
-                  {isActive && (
-                    <circle r={r + 5} fill={country.color} opacity={0.25} />
-                  )}
-                  <circle r={r} fill={country.color} opacity={0.9} className="cursor-pointer" />
-                  {country.rank <= 3 && (
-                    <text
-                      textAnchor="middle"
-                      y={-r - 5}
-                      className="fill-text-primary text-[8px] font-bold pointer-events-none"
-                    >
-                      {country.name}
-                    </text>
-                  )}
-                </Marker>
-              );
-            })}
           </ComposableMap>
 
           {/* Tooltip */}
@@ -201,15 +185,21 @@ export function WorldMap() {
               <div className="mt-2 space-y-1">
                 <div className="flex items-center justify-between gap-6 text-xs">
                   <span className="text-text-tertiary">Rang mondial</span>
-                  <span className="font-semibold text-accent-primary">#{active.rank}</span>
+                  <span className="font-semibold text-accent-primary">
+                    #{active.rank}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between gap-6 text-xs">
                   <span className="text-text-tertiary">Développeurs</span>
-                  <span className="font-semibold text-text-primary">{active.developers}</span>
+                  <span className="font-semibold text-text-primary">
+                    {active.developers}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between gap-6 text-xs">
                   <span className="text-text-tertiary">Hubs tech</span>
-                  <span className="font-semibold text-text-primary">{active.hubs}</span>
+                  <span className="font-semibold text-text-primary">
+                    {active.hubs}
+                  </span>
                 </div>
               </div>
             </div>

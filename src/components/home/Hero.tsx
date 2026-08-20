@@ -7,10 +7,10 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 export function Hero() {
   const typedText = useTypingEffect({
-    phrases: [...TYPING_PHRASES],
-    typingSpeed: 45,
-    deletingSpeed: 25,
-    pauseDuration: 1800,
+    phrases: TYPING_PHRASES,
+    typingSpeed: 60,
+    deletingSpeed: 40,
+    pauseDuration: 800,
   });
 
   return (
@@ -18,7 +18,7 @@ export function Hero() {
       <div className="hero-gradient absolute inset-0 -z-10" />
 
       <div className="flex flex-col items-center text-center">
-        <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-accent-primary/20 bg-accent-primary/5 px-4 py-1.5 text-xs font-medium text-accent-primary">
+        <div className="mt-10 inline-flex items-center gap-2 rounded-full border border-accent-primary/20 bg-accent-primary/5 px-4 py-1.5 text-xs font-medium text-accent-primary">
           <Sparkles className="h-3 w-3" />
           Plateforme éducative 100% gratuite
         </div>
@@ -34,7 +34,7 @@ export function Hero() {
         </div>
 
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg">
-          TechCompass centralise les meilleures IA, documentations et roadmaps
+          Tech242 centralise les meilleures IA, documentations et roadmaps
           pour guider les étudiants en informatique vers la réussite.
         </p>
 

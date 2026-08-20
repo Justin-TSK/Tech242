@@ -48,7 +48,7 @@ export default async function DomaineDetailPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
-      <nav className="mb-8 flex items-center gap-2 text-sm text-text-tertiary">
+      <nav aria-label="Fil d'Ariane" className="mb-8 flex items-center gap-2 text-sm text-text-tertiary">
         <Link href="/domaines" className="hover:text-accent-primary">
           Domaines
         </Link>

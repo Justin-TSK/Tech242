@@ -1,4 +1,4 @@
-export const SITE_NAME = "TechCompass";
+export const SITE_NAME = "Tech242";
 export const SITE_DESCRIPTION =
   "Votre boussole numérique pour naviguer dans le monde de l'informatique. 16 domaines, IA, documentations, roadmaps et glossaire pour apprendre à coder.";
 

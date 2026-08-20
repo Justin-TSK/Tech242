@@ -1,8 +1,14 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { DOMAINES } from "@/data/domaines";
 import { DOMAIN_ICONS } from "@/lib/icons";
 import { Hero } from "@/components/home/Hero";
 import { WorldMapClient } from "@/components/home/WorldMapClient";
+
+export const metadata: Metadata = {
+  title: "Tech242",
+  description: "Votre boussole numérique pour naviguer dans le monde de l'informatique. 16 domaines, IA, docs, roadmaps et glossaire.",
+};
 import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, Zap, Target, BookOpen, Route, BookMarked } from "lucide-react";
 

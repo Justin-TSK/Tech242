@@ -9,7 +9,6 @@ import {
   Gamepad2,
   Palette,
   Link,
-  Compass,
   Home,
   Layers,
   BookOpen,
@@ -52,5 +51,3 @@ export const NAV_ICONS: Record<string, LucideIcon> = {
   GraduationCap,
   BookMarked,
 };
-
-export { Compass };
