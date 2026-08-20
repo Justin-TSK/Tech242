@@ -1,69 +1,159 @@
-import Image from "next/image";
+import Link from "next/link";
+import { DOMAINES } from "@/data/domaines";
+import { DOMAIN_ICONS } from "@/lib/icons";
+import { Hero } from "@/components/home/Hero";
+import { WorldMapClient } from "@/components/home/WorldMapClient";
+import { Badge } from "@/components/ui/Badge";
+import { ArrowRight, Zap, Target, BookOpen, Route, BookMarked } from "lucide-react";
+
+const STATS = [
+  { value: "16", label: "Domaines", icon: Target, color: "text-accent-primary" },
+  { value: "26+", label: "IA Référencées", icon: Zap, color: "text-success" },
+  { value: "45+", label: "Documentations", icon: BookOpen, color: "text-warning" },
+  { value: "16", label: "Roadmaps", icon: Route, color: "text-danger" },
+  { value: "48", label: "Termes Glossaire", icon: BookMarked, color: "text-accent-primary" },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <Hero />
+
+      {/* Stats Bar */}
+      <section className="mt-20">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+          {STATS.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <div
+                key={stat.label}
+                className="flex items-center gap-4 rounded-2xl border border-border-primary bg-bg-card p-5"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary">
+                  <Icon className={`h-5 w-5 ${stat.color}`} strokeWidth={1.5} />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold tracking-tight text-text-primary">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs font-medium text-text-tertiary">
+                    {stat.label}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Domaines Grid */}
+      <section className="mt-24">
+        <div className="flex items-end justify-between">
+          <div>
+            <Badge variant="primary" dot>Parcours</Badge>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+              Choisissez votre domaine
+            </h2>
+            <p className="mt-2 text-text-secondary">
+              16 parcours pour trouver votre voie en informatique
+            </p>
+          </div>
+          <Link
+            href="/domaines"
+            className="hidden items-center gap-1.5 text-sm font-semibold text-accent-primary hover:text-accent-secondary sm:inline-flex"
+          >
+            Tout voir
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {DOMAINES.map((domaine) => {
+            const Icon = DOMAIN_ICONS[domaine.slug];
+            return (
+              <Link key={domaine.slug} href={`/domaines/${domaine.slug}`}>
+                <div className="group h-full rounded-2xl border border-border-primary bg-bg-card p-5 hover:border-accent-primary/30 hover:shadow-md">
+                  <div className="flex items-center justify-between">
+                    <div
+                      className="flex h-11 w-11 items-center justify-center rounded-xl"
+                      style={{ backgroundColor: `${domaine.color}15` }}
+                    >
+                      {Icon && (
+                        <Icon
+                          className="h-5 w-5"
+                          style={{ color: domaine.color }}
+                          strokeWidth={1.5}
+                        />
+                      )}
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-text-tertiary opacity-0 group-hover:opacity-100 group-hover:text-accent-primary" />
+                  </div>
+                  <h3 className="mt-3 text-sm font-semibold text-text-primary">
+                    {domaine.title}
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-text-tertiary line-clamp-2">
+                    {domaine.description}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 text-center sm:hidden">
+          <Link
+            href="/domaines"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-primary"
+          >
+            Voir tous les domaines
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Carte du monde */}
+      <section className="mt-24">
+        <div>
+          <Badge variant="primary" dot>Global</Badge>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+            Géographie de la Tech
+          </h2>
+          <p className="mt-2 text-text-secondary">
+            Les pays qui dominent le numérique à l&apos;échelle mondiale
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="mt-10">
+          <WorldMapClient />
         </div>
-      </main>
+      </section>
+
+      {/* CTA */}
+      <section className="mt-24">
+        <div className="rounded-3xl border border-accent-primary/20 bg-gradient-to-br from-accent-primary/5 via-bg-card to-accent-secondary/5 p-10 text-center sm:p-14">
+          <h2 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
+            Prêt à commencer votre voyage ?
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-text-secondary leading-relaxed">
+            Explorez les domaines, découvrez les meilleures IA et suivez les
+            roadmaps pour construire votre carrière en informatique.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/ia"
+              className="inline-flex items-center gap-2.5 rounded-xl bg-accent-primary px-7 py-3.5 text-sm font-semibold text-white hover:bg-accent-secondary"
+            >
+              Découvrir les IA
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/docs"
+              className="inline-flex items-center gap-2 rounded-xl border border-border-primary bg-bg-card px-7 py-3.5 text-sm font-semibold text-text-primary hover:bg-bg-card-hover"
+            >
+              Parcourir les docs
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

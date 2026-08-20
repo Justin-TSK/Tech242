@@ -1,0 +1,56 @@
+import {
+  Globe,
+  Smartphone,
+  BarChart3,
+  BrainCircuit,
+  Shield,
+  Cloud,
+  Network,
+  Gamepad2,
+  Palette,
+  Link,
+  Compass,
+  Home,
+  Layers,
+  BookOpen,
+  Route,
+  GraduationCap,
+  Database,
+  Briefcase,
+  FolderKanban,
+  Building2,
+  ShieldCheck,
+  BookMarked,
+  type LucideIcon,
+} from "lucide-react";
+
+export const DOMAIN_ICONS: Record<string, LucideIcon> = {
+  "dev-web": Globe,
+  "dev-mobile": Smartphone,
+  "data-science": BarChart3,
+  "ia-ml": BrainCircuit,
+  cybersecurite: Shield,
+  devops: Cloud,
+  reseaux: Network,
+  "game-dev": Gamepad2,
+  "ui-ux": Palette,
+  web3: Link,
+  "erp-systemes": Building2,
+  "business-intelligence": BarChart3,
+  "gestion-projet-it": FolderKanban,
+  "it-management": Briefcase,
+  "data-engineering": Database,
+  "securite-gouvernance": ShieldCheck,
+};
+
+export const NAV_ICONS: Record<string, LucideIcon> = {
+  Home,
+  Layers,
+  BrainCircuit,
+  BookOpen,
+  Route,
+  GraduationCap,
+  BookMarked,
+};
+
+export { Compass };
