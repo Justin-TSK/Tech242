@@ -33,16 +33,16 @@ export default function Home() {
             return (
               <div
                 key={stat.label}
-                className="flex items-center gap-4 rounded-2xl border border-border-primary bg-bg-card p-5"
+                className="flex items-center gap-3 rounded-2xl border border-border-primary bg-bg-card p-3 sm:gap-4 sm:p-5"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary">
-                  <Icon className={`h-5 w-5 ${stat.color}`} strokeWidth={1.5} />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary sm:h-12 sm:w-12">
+                  <Icon className={`h-4 w-4 ${stat.color} sm:h-5 sm:w-5`} strokeWidth={1.5} />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold tracking-tight text-text-primary">
+                  <div className="text-lg font-bold tracking-tight text-text-primary sm:text-2xl">
                     {stat.value}
                   </div>
-                  <div className="text-xs font-medium text-text-tertiary">
+                  <div className="text-[10px] font-medium text-text-tertiary sm:text-xs">
                     {stat.label}
                   </div>
                 </div>
